@@ -1,9 +1,16 @@
+/**
+ * Interacciones progresivas de la interfaz.
+ *
+ * La autorización y la validación viven siempre en el servidor. Este archivo
+ * solo mejora la experiencia: navegación móvil, paneles, filtros y chat.
+ */
 document.addEventListener('DOMContentLoaded', () => {
   const openSidebar = () => document.body.classList.add('sidebar-open');
   const closeSidebar = () => document.body.classList.remove('sidebar-open');
   document.querySelector('[data-sidebar-open]')?.addEventListener('click', openSidebar);
   document.querySelector('[data-sidebar-close]')?.addEventListener('click', closeSidebar);
   document.querySelectorAll('.sidebar-nav a').forEach((link) => link.addEventListener('click', closeSidebar));
+  document.querySelector('.sidebar-help-card')?.addEventListener('click', closeSidebar);
 
   const passwordToggle = document.querySelector('[data-password-toggle]');
   passwordToggle?.addEventListener('click', () => {
@@ -69,6 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (target && fileInput.files[0]) target.textContent = `${fileInput.files[0].name} · ${(fileInput.files[0].size / 1048576).toFixed(2)} MB`;
   });
 
+  const supportAttachments = document.getElementById('support-attachments');
+  supportAttachments?.addEventListener('change', () => {
+    const list = document.getElementById('support-file-list');
+    if (!list) return;
+    list.replaceChildren();
+    [...supportAttachments.files].forEach((file) => {
+      const item = document.createElement('span');
+      const name = document.createElement('strong');
+      const size = document.createElement('small');
+      name.textContent = file.name;
+      size.textContent = `${(file.size / 1048576).toFixed(2)} MB`;
+      item.append(name, size);
+      list.appendChild(item);
+    });
+  });
+
   const chatForm = document.getElementById('chat-form');
   if (chatForm) initializeChat(chatForm);
 
@@ -102,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+/** Inicializa búsqueda, filtros y ordenación local de la biblioteca visible. */
 function initializeDocumentLibrary() {
   const grid = document.getElementById('document-library-grid');
   if (!grid) return;
@@ -168,6 +192,7 @@ function initializeDocumentLibrary() {
   update();
 }
 
+/** Conecta el formulario de chat con el endpoint RAG protegido por CSRF. */
 function initializeChat(form) {
   const input = document.getElementById('question');
   const messages = document.getElementById('chat-messages');
@@ -213,16 +238,19 @@ function initializeChat(form) {
   });
 }
 
+/** Inserta texto del usuario sin interpretar HTML. */
 function appendUser(container, text) {
   const item = document.createElement('div'); item.className = 'message message-user'; item.textContent = text; container.appendChild(item);
 }
 
+/** Muestra un indicador temporal y devuelve el nodo para poder retirarlo. */
 function appendLoading(container) {
   const item = document.createElement('div'); item.className = 'message message-assistant';
   item.innerHTML = '<div class="assistant-label"><span>✦</span> EFFIWASTE AI</div><div class="thinking"><i></i><i></i><i></i></div>';
   container.appendChild(item); return item;
 }
 
+/** Renderiza respuesta y fuentes; answerHtml ya llega saneado desde el servidor. */
 function appendAssistant(container, answer, sources, isError = false, answerHtml = '') {
   const item = document.createElement('div'); item.className = 'message message-assistant';
   const label = document.createElement('div'); label.className = 'assistant-label'; label.innerHTML = '<span>✦</span> EFFIWASTE AI'; item.appendChild(label);

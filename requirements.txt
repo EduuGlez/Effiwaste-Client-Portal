@@ -12,6 +12,7 @@ itsdangerous>=2.2,<3
 pwdlib[argon2]>=0.2,<1
 openai>=1.60,<3
 celery[redis]>=5.4,<6
+redis>=5,<7
 PyMuPDF>=1.25,<2
 tiktoken>=0.8,<1
 email-validator>=2.2,<3

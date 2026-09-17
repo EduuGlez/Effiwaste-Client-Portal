@@ -1,3 +1,5 @@
+"""Conversión segura de Markdown generado a HTML apto para la interfaz."""
+
 import bleach
 import markdown
 

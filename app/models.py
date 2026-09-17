@@ -1,3 +1,5 @@
+"""Modelo relacional de usuarios, documentos, fragmentos y recomendaciones."""
+
 import enum
 import uuid
 from datetime import date, datetime, timezone
@@ -5,6 +7,7 @@ from datetime import date, datetime, timezone
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
+    CheckConstraint,
     Computed,
     DateTime,
     Enum,
@@ -23,21 +26,29 @@ from app.database import Base
 
 
 def utcnow() -> datetime:
+    """Devuelve una fecha UTC consciente de zona horaria."""
+
     return datetime.now(timezone.utc)
 
 
 class UserRole(str, enum.Enum):
+    """Roles de autorización disponibles."""
+
     ADMIN = "admin"
     USER = "user"
 
 
 class AudienceType(str, enum.Enum):
+    """Ámbito organizativo al que pertenece un documento."""
+
     GLOBAL = "global"
     CHAIN = "chain"
     HOTEL = "hotel"
 
 
 class DocumentStatus(str, enum.Enum):
+    """Estados posibles de la ingesta asíncrona."""
+
     QUEUED = "queued"
     PROCESSING = "processing"
     READY = "ready"
@@ -45,6 +56,8 @@ class DocumentStatus(str, enum.Enum):
 
 
 class RecommendationStatus(str, enum.Enum):
+    """Estados del ciclo de vida de una recomendación."""
+
     PROPOSED = "proposed"
     ACCEPTED = "accepted"
     SUCCESSFUL = "successful"
@@ -53,6 +66,8 @@ class RecommendationStatus(str, enum.Enum):
 
 
 class Chain(Base):
+    """Grupo empresarial que contiene uno o más hoteles."""
+
     __tablename__ = "chains"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -63,6 +78,8 @@ class Chain(Base):
 
 
 class Hotel(Base):
+    """Unidad operativa perteneciente a una cadena."""
+
     __tablename__ = "hotels"
     __table_args__ = (UniqueConstraint("chain_id", "name", name="uq_hotel_chain_name"),)
 
@@ -76,6 +93,8 @@ class Hotel(Base):
 
 
 class User(Base):
+    """Cuenta autenticable y su ámbito organizativo."""
+
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -93,7 +112,21 @@ class User(Base):
 
 
 class Document(Base):
+    """PDF original, audiencia y estado de procesamiento."""
+
     __tablename__ = "documents"
+    __table_args__ = (
+        CheckConstraint(
+            "(audience_type = 'GLOBAL' AND chain_id IS NULL AND hotel_id IS NULL) OR "
+            "(audience_type = 'CHAIN' AND chain_id IS NOT NULL AND hotel_id IS NULL) OR "
+            "(audience_type = 'HOTEL' AND chain_id IS NOT NULL AND hotel_id IS NOT NULL)",
+            name="ck_document_audience_scope",
+        ),
+        CheckConstraint(
+            "category != 'monthly_report' OR (report_month IS NOT NULL AND hotel_id IS NOT NULL)",
+            name="ck_monthly_report_scope",
+        ),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     original_name: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -125,6 +158,8 @@ class Document(Base):
 
 
 class DocumentChunk(Base):
+    """Fragmento recuperable con vector y representación de texto completo."""
+
     __tablename__ = "document_chunks"
     __table_args__ = (
         UniqueConstraint("document_id", "page_number", "chunk_index", name="uq_document_page_chunk"),
@@ -156,6 +191,8 @@ class DocumentChunk(Base):
 
 
 class QueryLog(Base):
+    """Registro auditable de una pregunta y su respuesta."""
+
     __tablename__ = "query_logs"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -167,6 +204,8 @@ class QueryLog(Base):
 
 
 class Recommendation(Base):
+    """Acción propuesta y, opcionalmente, su evaluación posterior."""
+
     __tablename__ = "recommendations"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

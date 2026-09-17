@@ -1,3 +1,5 @@
+"""Validación, extracción visual y fragmentación controlada de documentos PDF."""
+
 import base64
 import re
 from dataclasses import dataclass
@@ -12,12 +14,16 @@ from app.services.openai_service import transcribe_page_image
 
 @dataclass(slots=True)
 class PageContent:
+    """Contenido normalizado de una página y procedencia de su extracción."""
+
     page_number: int
     text: str
     used_vision: bool
 
 
 def validate_pdf(path: Path) -> None:
+    """Rechaza archivos sin firma, dañados, cifrados o fuera de límites."""
+
     with path.open("rb") as file:
         signature = file.read(5)
     if signature != b"%PDF-":
@@ -37,6 +43,8 @@ def validate_pdf(path: Path) -> None:
 
 
 def _clean_text(value: str) -> str:
+    """Elimina nulos y ruido de espaciado sin destruir párrafos."""
+
     value = value.replace("\x00", " ")
     value = re.sub(r"[ \t]+", " ", value)
     value = re.sub(r"\n{3,}", "\n\n", value)
@@ -44,6 +52,8 @@ def _clean_text(value: str) -> str:
 
 
 def extract_pdf_pages(path: Path) -> list[PageContent]:
+    """Combina texto nativo y visión cuando una página lo requiere."""
+
     pages: list[PageContent] = []
     with pymupdf.open(path) as document:
         for index, page in enumerate(document, start=1):
@@ -75,6 +85,10 @@ def extract_pdf_pages(path: Path) -> list[PageContent]:
 
 
 def chunk_page(text: str, max_tokens: int = 850, overlap: int = 120) -> list[tuple[str, int]]:
+    """Divide una página en ventanas solapadas medidas con el tokenizer."""
+
+    if max_tokens <= 0 or overlap < 0 or overlap >= max_tokens:
+        raise ValueError("max_tokens debe ser positivo y overlap menor que max_tokens")
     if not text.strip():
         return []
     encoding = tiktoken.get_encoding("cl100k_base")

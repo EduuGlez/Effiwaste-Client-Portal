@@ -18,6 +18,7 @@
   </div>
   <div class="login-panel">
     <form class="login-card" method="post" action="/auth/login">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <div>
         <span class="eyebrow">BIENVENIDO</span>
         <h2>Accede a la Suite</h2>

@@ -98,6 +98,11 @@ El ciclo de mejora conecta cada periodo con el siguiente:
 
 El proyecto combina **FastAPI**, **PostgreSQL + pgvector**, **Redis**, **Celery** y modelos de **OpenAI** para ofrecer autenticación, procesamiento documental multimodal, búsqueda híbrida, respuestas con fuentes y generación de recomendaciones.
 
+## Documentación técnica
+
+- [Guía del código](docs/CODEBASE.md) — arquitectura, módulos, modelo de datos y flujos completos.
+- [Diseño de seguridad](docs/SECURITY.md) — amenazas, controles, requisitos de producción y límites conocidos.
+
 ---
 
 <div align="center">

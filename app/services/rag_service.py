@@ -1,3 +1,5 @@
+"""Recuperación híbrida y construcción de respuestas RAG con trazabilidad."""
+
 from dataclasses import dataclass
 
 from sqlalchemy import func, select
@@ -11,11 +13,15 @@ from app.services.openai_service import answer_with_context, create_embeddings
 
 @dataclass(slots=True)
 class RetrievalResult:
+    """Fragmento recuperado junto a su puntuación fusionada."""
+
     chunk: DocumentChunk
     score: float
 
 
 def retrieve(db: Session, user: User, question: str) -> list[RetrievalResult]:
+    """Combina ranking semántico y léxico después de filtrar la audiencia."""
+
     settings = get_settings()
     query_embedding = create_embeddings([question])[0]
     eligible = document_access_filter(user)
@@ -57,6 +63,8 @@ def retrieve(db: Session, user: User, question: str) -> list[RetrievalResult]:
 
 
 def ask(db: Session, user: User, question: str) -> dict:
+    """Genera una respuesta con fuentes y registra la consulta para auditoría."""
+
     results = retrieve(db, user, question)
     sources = [
         {

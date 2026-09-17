@@ -1,9 +1,13 @@
+"""Política central de acceso multiempresa a los documentos."""
+
 from sqlalchemy import and_, or_
 
 from app.models import AudienceType, Document, User, UserRole
 
 
 def document_access_filter(user: User):
+    """Construye el predicado SQL de documentos visibles para un usuario."""
+
     if user.role == UserRole.ADMIN:
         return True
 
@@ -20,6 +24,8 @@ def document_access_filter(user: User):
 
 
 def can_access_document(user: User, document: Document) -> bool:
+    """Aplica la misma política a un documento ya cargado."""
+
     if user.role == UserRole.ADMIN or document.audience_type == AudienceType.GLOBAL:
         return True
     if document.audience_type == AudienceType.CHAIN:
@@ -27,4 +33,3 @@ def can_access_document(user: User, document: Document) -> bool:
     if document.audience_type == AudienceType.HOTEL:
         return bool(user.hotel_id and user.hotel_id == document.hotel_id)
     return False
-

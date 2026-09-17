@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', path='/app.css') }}?v=20260917-3">
-  <script src="{{ url_for('static', path='/app.js') }}?v=20260917-1" defer></script>
+  <link rel="stylesheet" href="{{ url_for('static', path='/app.css') }}?v=20260917-4">
+  <script src="{{ url_for('static', path='/app.js') }}?v=20260917-2" defer></script>
 </head>
 <body class="{% block body_class %}{% endblock %}">
   {% if user %}
@@ -50,6 +50,13 @@
         {% endif %}
       </nav>
       <div class="sidebar-footer">
+        <a href="/contact" class="sidebar-help-card {% if request.url.path == '/contact' %}active{% endif %}">
+          <span class="sidebar-help-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"></path><path d="M5 12h2v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2Zm14 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2ZM17 18c0 2-2 3-5 3"></path></svg>
+          </span>
+          <span><small>¿NECESITAS AYUDA?</small><strong>Centro de soporte</strong></span>
+          <b aria-hidden="true">›</b>
+        </a>
         <div class="sidebar-profile">
           <span class="avatar">{{ user.full_name[:1] | upper }}</span>
           <span><strong>{{ user.full_name }}</strong><small>{{ user.hotel.name if user.hotel else user.role.value }}</small></span>

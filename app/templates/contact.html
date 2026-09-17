@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Centro de ayuda{% endblock %}
+{% block body_class %}contact-page{% endblock %}
+{% block content %}
+<section class="contact-shell">
+  <header class="contact-hero">
+    <span class="eyebrow">ESTAMOS CONTIGO</span>
+    <h1>Centro de ayuda</h1>
+    <p>Cuéntanos qué necesitas. Nuestro equipo recibirá automáticamente el contexto de tu cuenta para poder ayudarte más rápido.</p>
+  </header>
+
+  {% if ok %}<div class="alert alert-success contact-alert" role="status">{{ ok }}</div>{% endif %}
+  {% if error %}<div class="alert alert-error contact-alert" role="alert">{{ error }}</div>{% endif %}
+
+  <div class="contact-grid">
+    <section class="contact-information" aria-labelledby="contact-information-title">
+      <div class="contact-information-heading">
+        <span class="contact-information-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"></path><path d="M5 12h2v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2Zm14 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2Z"></path></svg>
+        </span>
+        <div><span class="eyebrow">ATENCIÓN DIRECTA</span><h2 id="contact-information-title">Habla con nosotros</h2></div>
+      </div>
+
+      <div class="support-lines">
+        <a href="tel:+34822724500"><span>Effiwaste</span><strong>+(34) 822 72 45 00</strong></a>
+        <a href="tel:+34822724510"><span>Soporte</span><strong>+(34) 822 72 45 10</strong></a>
+      </div>
+
+      <div class="office-section">
+        <h3>Nuestras sedes</h3>
+        <div class="office-grid">
+          <address><strong>Tenerife</strong><span>Polígono Industrial Granadilla,<br>Av. Montaña Támez, C.P. 4,<br>38619, Santa Cruz de Tenerife</span></address>
+          <address><strong>Barcelona</strong><span>C. Lepanto nº 270, Bajos<br>08025 Barcelona</span></address>
+        </div>
+      </div>
+
+      <div class="direct-contact">
+        <h3>Contacto</h3>
+        <a href="mailto:soporte@effiwaste.es">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18v12H3z"></path><path d="m4 7 8 6 8-6"></path></svg>
+          <span><small>Correo electrónico</small><strong>soporte@effiwaste.es</strong></span>
+        </a>
+        <a href="tel:+34679629203">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h3l1.5 5-2 1.5a14 14 0 0 0 5 5L16 12.5l5 1.5v3c0 2.2-1.8 4-4 4A14 14 0 0 1 3 7c0-2.2 1.8-4 4-4Z"></path></svg>
+          <span><small>Teléfono de contacto</small><strong>+34 679 62 92 03</strong></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="support-form-card" aria-labelledby="support-form-title">
+      <div class="support-form-heading">
+        <span class="eyebrow">ENVÍA UNA SOLICITUD</span>
+        <h2 id="support-form-title">¿Cómo podemos ayudarte?</h2>
+        <p>Describe tu consulta y adjunta, si lo necesitas, imágenes o documentos.</p>
+      </div>
+      <form method="post" action="/contact" enctype="multipart/form-data" id="support-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label>Asunto
+          <input name="subject" minlength="3" maxlength="160" required placeholder="Ej. No puedo acceder a un informe">
+        </label>
+        <label>Mensaje
+          <textarea name="body" minlength="10" maxlength="10000" rows="8" required placeholder="Cuéntanos qué ha ocurrido y qué estabas intentando hacer…"></textarea>
+        </label>
+        <label class="support-dropzone" for="support-attachments">
+          <input id="support-attachments" type="file" name="attachments" multiple accept="image/png,image/jpeg,image/gif,image/webp,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt">
+          <span class="support-upload-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4"></path><path d="M5 14v5h14v-5"></path></svg>
+          </span>
+          <span><strong>Adjuntar imágenes o documentos</strong><small>Hasta {{ attachment_max_count }} archivos · {{ attachment_max_mb }} MB en total</small></span>
+        </label>
+        <div id="support-file-list" class="support-file-list" aria-live="polite"></div>
+        <div class="support-privacy-note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3"></path><rect x="5" y="10" width="14" height="11" rx="2"></rect></svg>
+          <p>Tu nombre, correo, hotel y cadena se añaden de forma segura al enviar la solicitud. No necesitas escribirlos aquí.</p>
+        </div>
+        <button class="button button-primary support-submit" type="submit">Enviar solicitud <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+  </div>
+</section>
+{% endblock %}
