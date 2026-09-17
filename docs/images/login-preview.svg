@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Effiwaste Suite — acceso unificado</title>
+  <desc id="desc">Vista del acceso a Effiwaste Suite con una presentación del ecosistema y el formulario de inicio de sesión.</desc>
+  <defs>
+    <linearGradient id="story" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#073b6c"/>
+      <stop offset="0.65" stop-color="#0b5394"/>
+      <stop offset="1" stop-color="#087b9a"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfdff"/>
+      <stop offset="1" stop-color="#eaf3fb"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#00b6bd"/>
+      <stop offset="1" stop-color="#6bac00"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#073b6c" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="1440" height="900" rx="28" fill="url(#page)"/>
+  <rect width="778" height="900" rx="28" fill="url(#story)"/>
+  <rect width="8" height="900" rx="4" fill="url(#accent)"/>
+  <circle cx="742" cy="745" r="290" fill="none" stroke="#fff" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="742" cy="745" r="220" fill="none" stroke="#fff" stroke-opacity="0.07" stroke-width="70"/>
+  <circle cx="680" cy="140" r="240" fill="#00b6bd" opacity="0.07"/>
+
+  <g transform="translate(64 52)">
+    <rect width="42" height="42" rx="12" fill="#55d8dc"/>
+    <text x="21" y="28" text-anchor="middle" fill="#073b6c" font-family="Arial, sans-serif" font-size="20" font-weight="800">E</text>
+    <text x="56" y="18" fill="#fff" font-family="Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="3">EFFIWASTE</text>
+    <text x="56" y="35" fill="#fff" opacity="0.62" font-family="Arial, sans-serif" font-size="9" letter-spacing="2">SUITE</text>
+  </g>
+
+  <g transform="translate(64 284)">
+    <text fill="#55edf2" font-family="Arial, sans-serif" font-size="12" font-weight="800" letter-spacing="3">TODO TU ECOSISTEMA, CONECTADO</text>
+    <text y="82" fill="#fff" font-family="Arial, sans-serif" font-size="58" font-weight="700" letter-spacing="-2">Una sola plataforma.</text>
+    <text y="146" fill="#fff" font-family="Arial, sans-serif" font-size="58" font-weight="700" letter-spacing="-2">Toda tu operativa.</text>
+    <text y="204" fill="#fff" opacity="0.78" font-family="Arial, sans-serif" font-size="17">Control del desperdicio, etiquetado, cocina y conocimiento</text>
+    <text y="234" fill="#fff" opacity="0.78" font-family="Arial, sans-serif" font-size="17">inteligente en una experiencia compartida.</text>
+  </g>
+
+  <g transform="translate(64 780)" font-family="Arial, sans-serif">
+    <g>
+      <rect width="148" height="46" rx="11" fill="#fff" fill-opacity="0.055" stroke="#fff" stroke-opacity="0.15"/>
+      <circle cx="17" cy="23" r="4" fill="#6bac00"/>
+      <text x="30" y="27" fill="#fff" opacity="0.78" font-size="9" font-weight="700" letter-spacing="1.2">UN ÚNICO ACCESO</text>
+    </g>
+    <g transform="translate(160)">
+      <rect width="174" height="46" rx="11" fill="#fff" fill-opacity="0.055" stroke="#fff" stroke-opacity="0.15"/>
+      <circle cx="17" cy="23" r="4" fill="#6bac00"/>
+      <text x="30" y="27" fill="#fff" opacity="0.78" font-size="9" font-weight="700" letter-spacing="1.2">SERVICIOS CONECTADOS</text>
+    </g>
+    <g transform="translate(346)">
+      <rect width="180" height="46" rx="11" fill="#fff" fill-opacity="0.055" stroke="#fff" stroke-opacity="0.15"/>
+      <circle cx="17" cy="23" r="4" fill="#6bac00"/>
+      <text x="30" y="27" fill="#fff" opacity="0.78" font-size="9" font-weight="700" letter-spacing="1.2">DECISIONES CON DATOS</text>
+    </g>
+  </g>
+
+  <g transform="translate(886 198)" filter="url(#shadow)" font-family="Arial, sans-serif">
+    <rect width="446" height="510" rx="24" fill="#fff" fill-opacity="0.96" stroke="#0b5394" stroke-opacity="0.12"/>
+    <text x="46" y="58" fill="#0b5394" font-size="11" font-weight="800" letter-spacing="2.3">BIENVENIDO</text>
+    <text x="46" y="100" fill="#073b6c" font-size="32" font-weight="700">Accede a la Suite</text>
+    <text x="46" y="132" fill="#617487" font-size="15">Entra con una sola cuenta a todas tus</text>
+    <text x="46" y="153" fill="#617487" font-size="15">herramientas Effiwaste.</text>
+
+    <text x="46" y="202" fill="#102f4d" font-size="12" font-weight="700">Correo electrónico</text>
+    <rect x="46" y="218" width="354" height="56" rx="10" fill="#fff" stroke="#cbdbe8" stroke-width="1.5"/>
+    <text x="64" y="252" fill="#8b9bac" font-size="13">nombre@empresa.com</text>
+
+    <text x="46" y="318" fill="#102f4d" font-size="12" font-weight="700">Contraseña</text>
+    <rect x="46" y="334" width="354" height="56" rx="10" fill="#fff" stroke="#cbdbe8" stroke-width="1.5"/>
+    <text x="64" y="368" fill="#8b9bac" font-size="16" letter-spacing="2">••••••••</text>
+
+    <rect x="46" y="412" width="354" height="54" rx="11" fill="#0b5394"/>
+    <text x="202" y="446" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Acceder</text>
+    <text x="350" y="447" fill="#00b6bd" font-size="23">→</text>
+    <text x="223" y="493" text-anchor="middle" fill="#748698" font-size="11">Acceso seguro para usuarios y administradores</text>
+  </g>
+</svg>

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Biblioteca de documentos{% endblock %}
+{% block body_class %}document-library-page{% endblock %}
+{% block content %}
+<section class="document-library-shell">
+  <header class="document-library-hero">
+    <div>
+      <span class="eyebrow">CENTRO DOCUMENTAL</span>
+      <h1>Biblioteca de documentos</h1>
+      <p>Consulta, filtra y descarga toda la documentación disponible para {{ user.hotel.name if user.hotel else (user.chain.name if user.chain else 'tu organización') }}.</p>
+    </div>
+    <div class="library-total"><strong>{{ documents | length }}</strong><span>documentos<br>disponibles</span></div>
+  </header>
+
+  <div class="library-toolbar">
+    <label class="library-search" for="document-library-search">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
+      <input id="document-library-search" type="search" placeholder="Buscar un documento por su nombre…" autocomplete="off">
+      <button type="button" data-library-clear aria-label="Limpiar búsqueda">×</button>
+    </label>
+    <label class="library-sort">Ordenar por
+      <select id="document-library-sort">
+        <option value="recent">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+        <option value="name-asc">Nombre A–Z</option>
+        <option value="name-desc">Nombre Z–A</option>
+        <option value="category">Categoría</option>
+      </select>
+    </label>
+  </div>
+
+  <nav class="library-category-filters" aria-label="Filtrar por categoría">
+    <button type="button" class="active" data-library-category="all" aria-pressed="true"><span>Todos</span><b>{{ documents | length }}</b></button>
+    {% for category, label in category_labels.items() %}
+    <button type="button" data-library-category="{{ category }}" aria-pressed="false"><span>{{ label }}</span><b>{{ category_counts.get(category, 0) }}</b></button>
+    {% endfor %}
+  </nav>
+
+  <div class="library-results-heading">
+    <div><span class="eyebrow">DOCUMENTOS</span><h2 id="library-results-title">Todos los documentos</h2></div>
+    <span id="library-results-count">{{ documents | length }} resultados</span>
+  </div>
+
+  <div id="document-library-grid" class="document-library-grid">
+    {% for document in documents %}
+    <article class="library-document-card"
+      data-library-document
+      data-category="{{ document.category }}"
+      data-name="{{ document.original_name | lower }}"
+      data-created="{{ document.created_at.isoformat() }}"
+      data-category-label="{{ category_labels.get(document.category, 'Documento') }}">
+      <div class="document-card-preview category-preview-{{ document.category }}">
+        <span class="document-file-mark">PDF</span>
+        <svg aria-hidden="true" viewBox="0 0 64 78"><path d="M10 2h30l14 14v60H10z"></path><path d="M40 2v15h14"></path><path d="M19 32h26M19 42h26M19 52h18"></path></svg>
+        {% if document.report_month %}<span class="document-month">{{ document.report_month.strftime('%m/%Y') }}</span>{% endif %}
+      </div>
+      <div class="document-card-body">
+        <div class="document-card-category"><span>{{ category_labels.get(document.category, 'Documento') }}</span><i></i></div>
+        <h3 title="{{ document.original_name }}">{{ document.original_name }}</h3>
+        <div class="document-card-meta">
+          <span>{{ document.page_count }} pág.</span>
+          <span>{{ '%.1f' | format(document.size_bytes / 1048576) }} MB</span>
+          <span>{{ document.created_at.strftime('%d/%m/%Y') }}</span>
+        </div>
+        <div class="document-card-actions">
+          <a class="button-view-document" href="/documents/{{ document.id }}/view" target="_blank" rel="noopener">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+            Visualizar
+          </a>
+          <a class="button-download-document" href="/documents/{{ document.id }}/download" aria-label="Descargar {{ document.original_name }}">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19h16"></path></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <div id="document-library-empty" class="document-library-empty" {% if documents %}hidden{% endif %}>
+    <span>⌕</span><h3>No se encontraron documentos</h3><p>Prueba con otro nombre o selecciona una categoría diferente.</p>
+  </div>
+</section>
+{% endblock %}

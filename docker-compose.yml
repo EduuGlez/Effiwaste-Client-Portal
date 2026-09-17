@@ -1,0 +1,93 @@
+x-app-environment: &app-environment
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  OPENAI_CHAT_MODEL: ${OPENAI_CHAT_MODEL:-gpt-6-astra}
+  OPENAI_VISION_MODEL: ${OPENAI_VISION_MODEL:-gpt-5.6-luna}
+  OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-large}
+  EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1536}
+  SESSION_SECRET: ${SESSION_SECRET:-development-only-change-me}
+  ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+  ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+  DEMO_USER_EMAIL: ${DEMO_USER_EMAIL:-usuario@example.com}
+  DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:-Usuario123!}
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-raghotel}:${POSTGRES_PASSWORD:-raghotel}@db:5432/${POSTGRES_DB:-raghotel}
+  REDIS_URL: redis://redis:6379/0
+  UPLOAD_DIR: /data/uploads
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-50}
+  MAX_PDF_PAGES: ${MAX_PDF_PAGES:-300}
+  COOKIE_SECURE: ${COOKIE_SECURE:-false}
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-raghotel}
+      POSTGRES_USER: ${POSTGRES_USER:-raghotel}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-raghotel}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-raghotel} -d ${POSTGRES_DB:-raghotel}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  web:
+    build: .
+    environment: *app-environment
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  worker:
+    build: .
+    command: celery -A app.worker.celery_app worker --loglevel=INFO --concurrency=2
+    environment: *app-environment
+    volumes:
+      - uploads_data:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - "127.0.0.1:8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:

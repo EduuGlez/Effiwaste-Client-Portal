@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">Recomendaciones y seguimiento en Effiwaste</title>
+  <desc id="desc">Panel de acciones recomendadas, prioridades y seguimiento de mejoras obtenidas a partir de informes mensuales.</desc>
+  <defs>
+    <linearGradient id="nav" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b3765"/><stop offset="1" stop-color="#062643"/></linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fbfd"/><stop offset="1" stop-color="#eef5fa"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="170%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#073b6c" flood-opacity="0.09"/></filter>
+  </defs>
+  <rect width="1440" height="820" rx="28" fill="url(#hero)"/>
+  <rect width="258" height="820" rx="28" fill="url(#nav)"/>
+
+  <g transform="translate(27 29)" font-family="Arial, sans-serif"><rect width="39" height="39" rx="11" fill="#45d5da"/><text x="19.5" y="27" text-anchor="middle" fill="#073b6c" font-size="18" font-weight="800">E</text><text x="52" y="17" fill="#fff" font-size="13" font-weight="800" letter-spacing="2.2">EFFIWASTE</text><text x="52" y="34" fill="#fff" opacity="0.55" font-size="8" letter-spacing="1.8">SUITE</text></g>
+  <g transform="translate(18 112)" font-family="Arial, sans-serif"><text x="13" y="12" fill="#fff" opacity="0.38" font-size="8" font-weight="700" letter-spacing="1.7">ESPACIO DE TRABAJO</text><text x="55" y="69" fill="#fff" opacity="0.68" font-size="12" font-weight="700">Servicios</text><text x="55" y="140" fill="#fff" opacity="0.68" font-size="12" font-weight="700">Asistente AI</text><text x="55" y="211" fill="#fff" opacity="0.68" font-size="12" font-weight="700">Biblioteca</text><g transform="translate(0 235)"><rect width="222" height="63" rx="12" fill="#fff" fill-opacity="0.12"/><rect y="14" width="4" height="35" rx="2" fill="#6bac00"/><text x="55" y="28" fill="#fff" font-size="12" font-weight="700">Recomendaciones</text><text x="55" y="45" fill="#fff" opacity="0.52" font-size="9">Acciones y seguimiento</text></g></g>
+
+  <g transform="translate(302 50)" font-family="Arial, sans-serif">
+    <text fill="#0b5394" font-size="10" font-weight="800" letter-spacing="2">INTELIGENCIA OPERATIVA</text>
+    <text y="54" fill="#073b6c" font-size="40" font-weight="700">Recomendaciones</text>
+    <text y="87" fill="#617487" font-size="15">Convierte cada informe mensual en acciones concretas y medibles.</text>
+    <g transform="translate(820 0)" filter="url(#shadow)"><rect width="258" height="92" rx="15" fill="#fff" stroke="#d8e4ed"/><rect width="4" height="92" rx="2" fill="#00b6bd"/><text x="23" y="28" fill="#617487" font-size="9" font-weight="800" letter-spacing="1.2">INFORME ANALIZADO</text><text x="23" y="55" fill="#073b6c" font-size="20" font-weight="700">Enero 2027</text><text x="23" y="75" fill="#617487" font-size="10">Hotel Demo · 12 páginas</text></g>
+  </g>
+
+  <g transform="translate(302 176)" font-family="Arial, sans-serif">
+    <g filter="url(#shadow)"><rect width="1078" height="118" rx="18" fill="#fff" stroke="#dbe7ef"/><text x="24" y="35" fill="#0b5394" font-size="9" font-weight="800" letter-spacing="1.5">RESUMEN DEL PERIODO</text><text x="24" y="73" fill="#073b6c" font-size="23" font-weight="700">3 acciones prioritarias detectadas</text><text x="24" y="96" fill="#617487" font-size="12">Basadas en los patrones de desperdicio y la comparación con meses anteriores.</text>
+      <g transform="translate(650 20)"><rect width="126" height="76" rx="13" fill="#fff4e7"/><text x="18" y="29" fill="#a56713" font-size="9" font-weight="800">PRIORIDAD ALTA</text><text x="18" y="58" fill="#8a5612" font-size="25" font-weight="700">2</text></g>
+      <g transform="translate(790 20)"><rect width="126" height="76" rx="13" fill="#e2f9fa"/><text x="18" y="29" fill="#087e83" font-size="9" font-weight="800">EN SEGUIMIENTO</text><text x="18" y="58" fill="#087e83" font-size="25" font-weight="700">4</text></g>
+      <g transform="translate(930 20)"><rect width="126" height="76" rx="13" fill="#eef7df"/><text x="18" y="29" fill="#578900" font-size="9" font-weight="800">MEJORAS</text><text x="18" y="58" fill="#578900" font-size="25" font-weight="700">7</text></g>
+    </g>
+  </g>
+
+  <g transform="translate(302 327)" font-family="Arial, sans-serif">
+    <text fill="#073b6c" font-size="20" font-weight="700">Acciones propuestas</text><text x="923" fill="#617487" font-size="11">Ordenadas por impacto esperado</text>
+    <g transform="translate(0 29)" filter="url(#shadow)">
+      <rect width="1078" height="145" rx="17" fill="#fff" stroke="#dce6ed"/><rect width="5" height="145" rx="3" fill="#d88925"/>
+      <rect x="24" y="24" width="38" height="38" rx="11" fill="#fff4e7"/><text x="43" y="50" text-anchor="middle" fill="#d88925" font-size="18" font-weight="700">1</text>
+      <text x="80" y="39" fill="#a56713" font-size="9" font-weight="800" letter-spacing="1.3">PRIORIDAD ALTA · PRODUCCIÓN</text><text x="80" y="69" fill="#102f4d" font-size="17" font-weight="700">Ajustar la producción del buffet a la ocupación prevista</text><text x="80" y="95" fill="#617487" font-size="12">Reducir un 12 % la preparación inicial y activar reposiciones en intervalos más cortos.</text>
+      <rect x="894" y="48" width="154" height="48" rx="10" fill="#0b5394"/><text x="971" y="77" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Aceptar acción</text>
+    </g>
+    <g transform="translate(0 190)" filter="url(#shadow)">
+      <rect width="1078" height="145" rx="17" fill="#fff" stroke="#dce6ed"/><rect width="5" height="145" rx="3" fill="#00b6bd"/>
+      <rect x="24" y="24" width="38" height="38" rx="11" fill="#e2f9fa"/><text x="43" y="50" text-anchor="middle" fill="#087e83" font-size="18" font-weight="700">2</text>
+      <text x="80" y="39" fill="#087e83" font-size="9" font-weight="800" letter-spacing="1.3">IMPACTO MEDIO · SERVICIO</text><text x="80" y="69" fill="#102f4d" font-size="17" font-weight="700">Revisar gramajes y reposiciones durante la última hora</text><text x="80" y="95" fill="#617487" font-size="12">Priorizar bandejas de menor capacidad para mantener la presentación con menos excedente.</text>
+      <rect x="894" y="48" width="154" height="48" rx="10" fill="#0b5394"/><text x="971" y="77" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Aceptar acción</text>
+    </g>
+  </g>
+
+  <g transform="translate(302 704)" font-family="Arial, sans-serif" filter="url(#shadow)">
+    <rect width="1078" height="86" rx="17" fill="#eef7df" stroke="#d5e9b8"/><circle cx="44" cy="43" r="21" fill="#6bac00"/><path d="M34 43l7 7 14-16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="82" y="36" fill="#3d6700" font-size="14" font-weight="700">Aprendizaje continuo</text><text x="82" y="59" fill="#536b34" font-size="11">Las acciones aceptadas se comparan con el siguiente informe para confirmar mejoras y enriquecer el histórico del hotel.</text>
+  </g>
+</svg>

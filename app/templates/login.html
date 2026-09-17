@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Acceso{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block public_content %}
+<section class="login-shell">
+  <div class="login-story">
+    <div class="story-brand"><span class="brand-mark">E</span><span><strong>EFFIWASTE</strong><small>SUITE</small></span></div>
+    <div class="story-copy">
+      <span class="eyebrow">TODO TU ECOSISTEMA, CONECTADO</span>
+      <h1>Una sola plataforma.<br>Toda tu operativa.</h1>
+      <p>Effiwaste Suite conecta el control del desperdicio, el etiquetado, la gestión de cocina y el conocimiento inteligente para que tu equipo trabaje con una visión compartida.</p>
+    </div>
+    <div class="story-proof" aria-label="Ventajas de Effiwaste Suite">
+      <span>UN ÚNICO ACCESO</span>
+      <span>SERVICIOS CONECTADOS</span>
+      <span>DECISIONES CON DATOS</span>
+    </div>
+  </div>
+  <div class="login-panel">
+    <form class="login-card" method="post" action="/auth/login">
+      <div>
+        <span class="eyebrow">BIENVENIDO</span>
+        <h2>Accede a la Suite</h2>
+        <p>Entra con una sola cuenta a todas tus herramientas Effiwaste.</p>
+      </div>
+      {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+      <label>Correo electrónico<input type="email" name="email" autocomplete="username" required placeholder="nombre@empresa.com"></label>
+      <label>Contraseña<input id="login-password" type="password" name="password" autocomplete="current-password" required placeholder="••••••••••"></label>
+      <button class="button button-primary button-wide" type="submit">Acceder <span>→</span></button>
+      <small class="login-help">¿No recuerdas tus credenciales? Contacta con el administrador de tu organización.</small>
+    </form>
+  </div>
+</section>
+{% endblock %}

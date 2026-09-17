@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token | default('') }}">
+  <title>{% block title %}RAG{% endblock %} · Effiwaste</title>
+  <meta name="theme-color" content="#073b6c">
+  <link rel="icon" href="{{ url_for('static', path='/favicon.ico') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='/app.css') }}?v=20260917-3">
+  <script src="{{ url_for('static', path='/app.js') }}?v=20260917-1" defer></script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% if user %}
+  <div class="app-layout">
+    <aside class="app-sidebar" id="app-sidebar">
+      <a class="sidebar-brand" href="/services" aria-label="Effiwaste RAG — inicio">
+        <span class="brand-mark">E</span>
+        <span><strong>EFFIWASTE</strong><small>SUITE</small></span>
+      </a>
+      <nav class="sidebar-nav" aria-label="Navegación principal">
+        <span class="sidebar-caption">ESPACIO DE TRABAJO</span>
+        <a href="/services" class="{% if request.url.path == '/services' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+          <span><strong>Servicios</strong><small>Accede a tus plataformas</small></span>
+        </a>
+        <a href="/assistant" class="{% if request.url.path == '/assistant' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h16v12H7l-3 3V5Zm4 5h8M8 13h5"/></svg>
+          <span><strong>Asistente AI</strong><small>Consulta tu conocimiento</small></span>
+        </a>
+        <a href="/library" class="{% if request.url.path == '/library' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Zm0 0v16M8 7h8M8 11h8"/></svg>
+          <span><strong>Biblioteca</strong><small>Todos tus documentos</small></span>
+        </a>
+        {% if user.hotel_id %}
+        <a href="/recommendations" class="{% if request.url.path == '/recommendations' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v3M5.64 5.64l2.12 2.12M3 12h3m.22 6.36 2.12-2.12M18 12h3m-5.76-4.24 2.12-2.12M9 18h6m-5 3h4M8 12a4 4 0 1 1 8 0c0 1.6-.92 2.56-1.65 3.32-.48.5-.85.89-.85 1.68h-3c0-.79-.37-1.18-.85-1.68C8.92 14.56 8 13.6 8 12Z"/></svg>
+          <span><strong>Recomendaciones</strong><small>Acciones y seguimiento</small></span>
+        </a>
+        {% endif %}
+        {% if user.role.value == 'admin' %}
+        <span class="sidebar-caption sidebar-caption-spaced">GESTIÓN</span>
+        <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm8 4 2-1-2-3-2 .5-2-1L15.5 5h-4L11 7.5l-2 1L7 8l-2 3 2 1v2l-2 1 2 3 2-.5 2 1 .5 2.5h4l.5-2.5 2-1 2 .5 2-3-2-1v-2Z"/></svg>
+          <span><strong>Administración</strong><small>Documentos y usuarios</small></span>
+        </a>
+        {% endif %}
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-profile">
+          <span class="avatar">{{ user.full_name[:1] | upper }}</span>
+          <span><strong>{{ user.full_name }}</strong><small>{{ user.hotel.name if user.hotel else user.role.value }}</small></span>
+          <form method="post" action="/auth/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button title="Cerrar sesión" aria-label="Cerrar sesión">↪</button></form>
+        </div>
+      </div>
+    </aside>
+    <button class="app-sidebar-backdrop" type="button" data-sidebar-close aria-label="Cerrar navegación"></button>
+    <div class="app-main">
+      <header class="app-mobile-header"><button type="button" data-sidebar-open aria-label="Abrir navegación"><span></span><span></span><span></span></button><strong>EFFIWASTE</strong><span class="avatar">{{ user.full_name[:1] | upper }}</span></header>
+      <main>{% block content %}{% endblock %}</main>
+    </div>
+  </div>
+  {% else %}
+  <main>{% block public_content %}{% endblock %}</main>
+  {% endif %}
+</body>
+</html>

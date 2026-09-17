@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Administración{% endblock %}
+{% block body_class %}admin-page{% endblock %}
+{% block content %}
+<section class="admin-shell">
+  <div class="page-heading">
+    <div><span class="eyebrow">CENTRO DE CONTROL</span><h1>Administración</h1><p>Gestiona conocimiento, hoteles y accesos desde un único lugar.</p></div>
+    <button class="button button-primary" type="button" data-open-panel="upload-panel">＋ Subir documento</button>
+  </div>
+
+  {% if ok %}<div class="alert alert-success">{{ ok }}</div>{% endif %}
+  {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+
+  <div class="stats-grid">
+    <article><span>DOCUMENTOS</span><strong>{{ counts.documents }}</strong><small>{{ counts.ready }} listos para consulta</small></article>
+    <article><span>USUARIOS</span><strong>{{ counts.users }}</strong><small>cuentas activas</small></article>
+    <article><span>HOTELES</span><strong>{{ counts.hotels }}</strong><small>en {{ chains | length }} cadenas</small></article>
+    <article class="status-card"><span>SISTEMA</span><strong><i></i> Operativo</strong><small>OpenAI + pgvector</small></article>
+  </div>
+
+  <div class="admin-tabs" role="tablist">
+    <button class="active" data-admin-tab="documents">Documentos</button>
+    <button data-admin-tab="organization">Organización</button>
+    <button data-admin-tab="users">Usuarios</button>
+  </div>
+
+  <section id="tab-documents" class="tab-content active">
+    <div class="table-card">
+      <div class="card-heading"><div><h2>Base de conocimiento</h2><p>Los estados cambian automáticamente al finalizar la indexación.</p></div></div>
+      <div class="table-scroll">
+      <table>
+        <thead><tr><th>Documento</th><th>Categoría</th><th>Audiencia</th><th>Estado</th><th>Contenido</th><th>Fecha</th><th></th></tr></thead>
+        <tbody>
+        {% for document in documents %}
+          <tr>
+            <td><div class="file-cell"><span class="pdf-icon">PDF</span><span><strong>{{ document.original_name }}</strong><small>{{ (document.size_bytes / 1048576) | round(2) }} MB</small></span></div></td>
+            <td><span class="category-badge category-{{ document.category }}">{{ category_labels.get(document.category, 'Documento') }}</span>{% if document.report_month %}<small>{{ document.report_month.strftime('%m/%Y') }}</small>{% endif %}</td>
+            <td>
+              {% if document.audience_type.value == 'global' %}<span class="audience">Todos los clientes</span>
+              {% elif document.audience_type.value == 'chain' %}<span class="audience">Cadena · {{ document.chain.name }}</span>
+              {% else %}<span class="audience">Hotel · {{ document.hotel.name }}</span>{% endif %}
+            </td>
+            <td><span class="status status-{{ document.status.value }}">{{ {'queued':'En cola','processing':'Procesando','ready':'Listo','failed':'Error'}[document.status.value] }}</span>{% if document.error_message %}<small class="error-detail" title="{{ document.error_message }}">{{ document.error_message[:70] }}</small>{% endif %}</td>
+            <td><span>{{ document.page_count }} pág.</span><small>{{ document.chunk_count }} fragmentos</small></td>
+            <td>{{ document.created_at.strftime('%d/%m/%Y') }}<small>{{ document.created_at.strftime('%H:%M') }}</small></td>
+            <td><div class="row-actions">
+              <a href="/documents/{{ document.id }}/download" target="_blank" title="Descargar">↓</a>
+              {% if document.status.value == 'failed' %}<form method="post" action="/admin/documents/{{ document.id }}/retry"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button title="Reintentar">↻</button></form>{% endif %}
+              <form method="post" action="/admin/documents/{{ document.id }}/delete" data-confirm="¿Eliminar este documento y todos sus fragmentos?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="danger" title="Eliminar">×</button></form>
+            </div></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="7"><div class="empty-table">Sube el primer PDF para crear la base de conocimiento.</div></td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-organization" class="tab-content">
+    <div class="two-columns">
+      <article class="form-card"><span class="eyebrow">NUEVA CADENA</span><h2>Añadir cadena</h2>
+        <form method="post" action="/admin/chains"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Nombre<input name="name" minlength="2" required placeholder="Ej. Hoteles Costa"></label><button class="button button-dark">Crear cadena</button></form>
+      </article>
+      <article class="form-card"><span class="eyebrow">NUEVO HOTEL</span><h2>Añadir hotel</h2>
+        <form method="post" action="/admin/hotels"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Cadena<select name="chain_id" required>{% for chain in chains %}<option value="{{ chain.id }}">{{ chain.name }}</option>{% endfor %}</select></label><div class="field-row"><label>Nombre<input name="name" required></label><label>Código<input name="code" required placeholder="HTL-001"></label></div><button class="button button-dark">Crear hotel</button></form>
+      </article>
+    </div>
+    <div class="table-card compact"><div class="card-heading"><h2>Hoteles configurados</h2></div><div class="chip-grid">{% for hotel in hotels %}<div class="hotel-chip"><span>{{ hotel.name[:1] }}</span><div><strong>{{ hotel.name }}</strong><small>{{ hotel.chain.name }} · {{ hotel.code }}</small></div></div>{% endfor %}</div></div>
+  </section>
+
+  <section id="tab-users" class="tab-content">
+    <div class="two-columns users-layout">
+      <article class="form-card"><span class="eyebrow">NUEVA CUENTA</span><h2>Crear usuario de hotel</h2>
+        <form method="post" action="/admin/users"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Nombre completo<input name="full_name" required></label><label>Correo<input name="email" type="email" required></label><label>Contraseña inicial<input name="password" type="password" minlength="10" required></label><label>Hotel<select name="hotel_id" required>{% for hotel in hotels %}<option value="{{ hotel.id }}">{{ hotel.name }} · {{ hotel.chain.name }}</option>{% endfor %}</select></label><button class="button button-dark">Crear usuario</button></form>
+      </article>
+      <div class="table-card compact"><div class="card-heading"><h2>Usuarios</h2></div><div class="user-list">{% for account in users %}<div><span class="avatar">{{ account.full_name[:1] | upper }}</span><span><strong>{{ account.full_name }}</strong><small>{{ account.email }}{% if account.hotel %} · {{ account.hotel.name }}{% endif %}</small></span><em>{{ account.role.value }}</em></div>{% endfor %}</div></div>
+    </div>
+  </section>
+</section>
+
+<div id="upload-panel" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-panel></div>
+  <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="upload-title">
+    <button class="modal-close" type="button" data-close-panel>×</button>
+    <span class="eyebrow">NUEVO CONOCIMIENTO</span><h2 id="upload-title">Subir documento PDF</h2><p>El PDF se extraerá, analizará visualmente e indexará en segundo plano.</p>
+    <form method="post" action="/admin/documents" enctype="multipart/form-data" id="upload-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label class="dropzone"><input id="pdf-input" type="file" name="pdf" accept="application/pdf,.pdf" required><span class="upload-icon">⇧</span><strong>Selecciona o arrastra un PDF</strong><small id="file-name">Máximo {{ max_upload_mb }} MB</small></label>
+      <label>Tipo de documento<select id="document-category" name="category" required><option value="general">Documento general</option><option value="monthly_report">Informe mensual del cliente</option><option value="procedure">Procedimiento</option><option value="manual">Manual</option></select></label>
+      <label id="report-month-field" class="month-field">Mes del informe<input id="report-month" type="month" name="report_month" autocomplete="off"><small>Obligatorio para informes mensuales. Selecciona únicamente mes y año.</small></label>
+      <fieldset><legend>¿Quién puede consultarlo?</legend>
+        <label class="radio-card"><input type="radio" name="audience" value="global" checked><span><strong>Todos los clientes</strong><small>Disponible globalmente</small></span></label>
+        <label class="radio-card"><input type="radio" name="audience" value="chain"><span><strong>Una cadena</strong><small>Todos sus hoteles</small></span></label>
+        <label class="radio-card"><input type="radio" name="audience" value="hotel"><span><strong>Un hotel concreto</strong><small>Acceso exclusivo</small></span></label>
+      </fieldset>
+      <label id="chain-field" class="conditional-field">Cadena<select name="chain_id"><option value="">Selecciona…</option>{% for chain in chains %}<option value="{{ chain.id }}">{{ chain.name }}</option>{% endfor %}</select></label>
+      <label id="hotel-field" class="conditional-field">Hotel<select name="hotel_id"><option value="">Selecciona…</option>{% for hotel in hotels %}<option value="{{ hotel.id }}">{{ hotel.name }} · {{ hotel.chain.name }}</option>{% endfor %}</select></label>
+      <button class="button button-primary button-wide" type="submit">Subir e indexar <span>→</span></button>
+    </form>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Recomendaciones{% endblock %}
+{% block body_class %}recommendations-page{% endblock %}
+{% block content %}
+<section class="recommendations-shell">
+  <header class="recommendations-hero">
+    <div>
+      <span class="eyebrow">MEJORA CONTINUA</span>
+      <h1>Recomendaciones</h1>
+      <p>Acciones propuestas por IA a partir de tus informes mensuales y evaluadas con datos del mes siguiente.</p>
+    </div>
+    <div class="report-chip">
+      <span>ÚLTIMO INFORME ANALIZADO</span>
+      {% if latest_report %}
+      <strong>{{ latest_report.report_month.strftime('%m/%Y') if latest_report.report_month else latest_report.original_name }}</strong>
+      <small>{{ latest_report.original_name }}</small>
+      {% else %}
+      <strong>Sin informes</strong>
+      <small>El administrador debe subir un informe mensual.</small>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if ok %}<div class="alert alert-success">{{ ok }}</div>{% endif %}
+  {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+
+  <section class="recommendation-section tracking-section priority-section">
+    <div class="recommendation-heading">
+      <div><span class="eyebrow">TU PLAN ACTIVO</span><h2>Mejoras en curso</h2><p>Estas son las acciones que has aceptado y que se contrastarán con el próximo informe mensual.</p></div>
+      <span class="count-pill accent">{{ recommendations.accepted | length }} activas</span>
+    </div>
+    <div class="tracking-list">
+      {% for item in recommendations.accepted %}
+      <article>
+        <span class="tracking-icon">◎</span>
+        <div><span class="waste-tag">{{ item.waste_category }}</span><h3>{{ item.title }}</h3><p>{{ item.suggested_action }}</p></div>
+        <div class="tracking-state"><strong>Esperando datos</strong><small>Próximo informe mensual</small></div>
+      </article>
+      {% else %}
+      <div class="recommendation-empty compact"><p>Acepta una recomendación para comenzar su seguimiento.</p></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="recommendation-section proposals-section">
+    <div class="recommendation-heading">
+      <div><span class="eyebrow">NUEVAS OPORTUNIDADES</span><h2>Propuestas del último informe</h2><p>Las propuestas no aceptadas de informes anteriores se sustituyen al llegar un nuevo análisis.</p></div>
+      <span class="count-pill">{{ recommendations.proposed | length }} nuevas</span>
+    </div>
+    <div class="recommendation-grid">
+      {% for item in recommendations.proposed %}
+      <article class="recommendation-card proposed">
+        <div class="recommendation-card-top"><span class="waste-tag">{{ item.waste_category }}</span><span class="status-dot">Nueva</span></div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+        <div class="action-box"><small>ACCIÓN PROPUESTA</small><strong>{{ item.suggested_action }}</strong></div>
+        <div class="impact-line"><span>↗</span><p><small>CÓMO MEDIREMOS EL IMPACTO</small>{{ item.expected_impact }}</p></div>
+        <div class="recommendation-actions">
+          <form method="post" action="/recommendations/{{ item.id }}/accept">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="button button-primary" type="submit">Aceptar mejora <span>→</span></button>
+          </form>
+          <form method="post" action="/recommendations/{{ item.id }}/discard" data-confirm="¿Descartar esta propuesta? La IA evitará repetirla salvo que un informe futuro aporte nueva evidencia.">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="button button-secondary" type="submit">Descartar</button>
+          </form>
+        </div>
+        {% if item.source_document %}<small class="recommendation-source">Basada en {{ item.source_document.original_name }}</small>{% endif %}
+      </article>
+      {% else %}
+      <div class="recommendation-empty"><span>✦</span><h3>No hay propuestas pendientes</h3><p>Las recomendaciones aparecerán cuando se procese un informe mensual asignado a tu hotel.</p></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="recommendation-section action-library">
+    <div class="recommendation-heading">
+      <div><span class="eyebrow">BIBLIOTECA DE ACCIONES</span><h2>Mejoras que han funcionado</h2><p>Acciones confirmadas mediante informes mensuales posteriores.</p></div>
+      <span class="count-pill success">{{ recommendations.successful | length }} validadas</span>
+    </div>
+    {% if recommendations.successful %}
+    <div class="action-library-browser">
+      <div class="action-library-index">
+        <label class="action-search"><span>⌕</span><input id="action-library-search" type="search" placeholder="Buscar por acción o categoría…" autocomplete="off"></label>
+        <div class="action-library-list">
+          {% for item in recommendations.successful %}
+          <button type="button" class="action-library-item {% if loop.first %}active{% endif %}" data-action-id="{{ item.id }}" data-action-search="{{ item.title }} {{ item.waste_category }} {{ item.suggested_action }}">
+            <span class="success-mark">✓</span><span><small>{{ item.waste_category }}</small><strong>{{ item.title }}</strong></span><b>›</b>
+          </button>
+          {% endfor %}
+          <div id="action-search-empty" class="action-search-empty">No hay acciones que coincidan con la búsqueda.</div>
+        </div>
+      </div>
+      <div class="action-library-detail">
+        {% for item in recommendations.successful %}
+        <article id="action-detail-{{ item.id }}" class="action-detail-panel {% if loop.first %}active{% endif %}">
+          <div class="action-detail-heading"><span class="success-mark">✓</span><div><span class="waste-tag">{{ item.waste_category }}</span><h3>{{ item.title }}</h3></div></div>
+          <div class="action-detail-section"><small>ACCIÓN APLICADA</small><p>{{ item.suggested_action }}</p></div>
+          <div class="comparison-summary"><small>IMPACTO ENTRE INFORMES</small><p>{{ item.evaluation_summary or 'La comparación confirmó una mejora, pero no dispone de un resumen cuantitativo.' }}</p></div>
+          <div class="report-comparison">
+            <span><small>INFORME INICIAL</small><strong>{% if item.source_document and item.source_document.report_month %}{{ item.source_document.report_month.strftime('%m/%Y') }}{% else %}Origen{% endif %}</strong></span>
+            <b>→</b>
+            <span><small>INFORME DE VALIDACIÓN</small><strong>{% if item.evaluation_document and item.evaluation_document.report_month %}{{ item.evaluation_document.report_month.strftime('%m/%Y') }}{% else %}Posterior{% endif %}</strong></span>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}<div class="recommendation-empty compact"><p>Las acciones validadas se guardarán aquí como buenas prácticas de tu hotel.</p></div>{% endif %}
+  </section>
+
+  {% if recommendations.discarded %}
+  <details class="discarded-history">
+    <summary>Ver acciones descartadas ({{ recommendations.discarded | length }})</summary>
+    {% for item in recommendations.discarded %}
+    <article><strong>{{ item.title }}</strong><p>{{ item.evaluation_summary or 'No mostró una mejora verificable.' }}</p></article>
+    {% endfor %}
+  </details>
+  {% endif %}
+</section>
+{% endblock %}

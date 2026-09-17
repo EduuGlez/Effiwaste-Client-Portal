@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Asistente RAG{% endblock %}
+{% block body_class %}assistant-page{% endblock %}
+{% block content %}
+<section class="workspace">
+  <aside class="knowledge-sidebar">
+    <div>
+      <span class="eyebrow">TU ESPACIO DOCUMENTAL</span>
+      <h2>Biblioteca</h2>
+      <p>{{ user.hotel.name if user.hotel else (user.chain.name if user.chain else 'Acceso global') }}</p>
+    </div>
+    <div class="library-heading"><span>Documentos disponibles</span><strong>{{ documents | length }}</strong></div>
+    <div class="document-list">
+      {% if monthly_documents %}<div class="library-section-title"><span>Informes mensuales</span><b>{{ monthly_documents | length }}</b></div>{% endif %}
+      {% for document in monthly_documents %}
+      <a class="document-item" href="/documents/{{ document.id }}/download" target="_blank">
+        <span class="pdf-icon">PDF</span>
+        <span><strong>{{ document.original_name }}</strong><small>{% if document.report_month %}{{ document.report_month.strftime('%m/%Y') }} · {% endif %}{{ document.page_count }} páginas</small></span>
+      </a>
+      {% endfor %}
+      {% if general_documents %}<div class="library-section-title library-section-spaced"><span>Documentación</span><b>{{ general_documents | length }}</b></div>{% endif %}
+      {% for document in general_documents %}
+      <a class="document-item" href="/documents/{{ document.id }}/download" target="_blank">
+        <span class="pdf-icon">PDF</span>
+        <span><strong>{{ document.original_name }}</strong><small>{{ category_labels.get(document.category, 'Documento') }} · {{ document.page_count }} páginas</small></span>
+      </a>
+      {% endfor %}
+      {% if not documents %}
+      <div class="empty-small">Todavía no hay documentos disponibles para tu organización.</div>
+      {% endif %}
+    </div>
+    <div class="privacy-note"><span>◈</span><p>El asistente solo consulta documentos autorizados para tu organización.</p></div>
+  </aside>
+
+  <div class="chat-shell">
+    <div id="chat-empty" class="chat-hero">
+      <span class="hero-orbit">✦</span>
+      <span class="eyebrow">ASISTENTE AI</span>
+      <h1>¿En qué puedo ayudarte?</h1>
+      <p>Pregunta sobre procesos, manuales o informes. Las respuestas se generan a partir de la documentación autorizada para ti.</p>
+      <div class="prompt-suggestions">
+        <button type="button" data-question="¿Cuáles son los procedimientos más importantes que debo conocer?">Procedimientos clave <span>→</span></button>
+        <button type="button" data-question="Resume mi último informe mensual y señala los principales desperdicios.">Último informe <span>→</span></button>
+        <button type="button" data-question="¿Qué medidas puedo tomar para reducir el desperdicio detectado?">Reducir desperdicio <span>→</span></button>
+      </div>
+    </div>
+    <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+    <form id="chat-form" class="composer">
+      <textarea id="question" rows="1" maxlength="2000" placeholder="Pregunta a la base de conocimiento…" required></textarea>
+      <button type="submit" aria-label="Enviar pregunta">↑</button>
+      <small>Las respuestas incluyen referencias a los documentos originales.</small>
+    </form>
+  </div>
+</section>
+{% endblock %}

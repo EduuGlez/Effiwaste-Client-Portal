@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">Asistente RAG de Effiwaste</title>
+  <desc id="desc">Espacio de consulta con biblioteca documental, respuesta de IA y referencias a documentos autorizados.</desc>
+  <defs>
+    <linearGradient id="nav" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b3765"/><stop offset="1" stop-color="#062643"/></linearGradient>
+    <radialGradient id="chat" cx="50%" cy="34%" r="70%"><stop stop-color="#fff"/><stop offset="1" stop-color="#eef6fb"/></radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#073b6c" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <rect width="1440" height="820" rx="28" fill="#f4f8fb"/>
+  <rect width="258" height="820" rx="28" fill="url(#nav)"/>
+  <rect x="258" width="302" height="820" fill="#fff" stroke="#d9e5ef"/>
+  <rect x="560" width="880" height="820" rx="0 28 28 0" fill="url(#chat)"/>
+
+  <g transform="translate(27 29)" font-family="Arial, sans-serif">
+    <rect width="39" height="39" rx="11" fill="#45d5da"/>
+    <text x="19.5" y="27" text-anchor="middle" fill="#073b6c" font-size="18" font-weight="800">E</text>
+    <text x="52" y="17" fill="#fff" font-size="13" font-weight="800" letter-spacing="2.2">EFFIWASTE</text>
+    <text x="52" y="34" fill="#fff" opacity="0.55" font-size="8" letter-spacing="1.8">SUITE</text>
+  </g>
+
+  <g transform="translate(18 111)" font-family="Arial, sans-serif">
+    <text x="13" y="13" fill="#fff" opacity="0.38" font-size="8" font-weight="700" letter-spacing="1.7">ESPACIO DE TRABAJO</text>
+    <g transform="translate(0 30)" fill="#fff">
+      <text x="55" y="28" opacity="0.68" font-size="12" font-weight="700">Servicios</text><text x="55" y="45" opacity="0.36" font-size="9">Accede a tus plataformas</text>
+    </g>
+    <g transform="translate(0 101)">
+      <rect width="222" height="63" rx="12" fill="#fff" fill-opacity="0.12"/>
+      <rect width="4" height="35" y="14" rx="2" fill="#00b6bd"/>
+      <rect x="15" y="17" width="28" height="28" rx="8" fill="#00b6bd" fill-opacity="0.18"/>
+      <path d="M22 24h15v11H27l-5 4z" fill="none" stroke="#55edf2" stroke-width="1.5"/>
+      <text x="55" y="28" fill="#fff" font-size="12" font-weight="700">Asistente AI</text>
+      <text x="55" y="45" fill="#fff" opacity="0.52" font-size="9">Consulta tu conocimiento</text>
+    </g>
+    <g transform="translate(0 172)" fill="#fff">
+      <text x="55" y="28" opacity="0.68" font-size="12" font-weight="700">Biblioteca</text><text x="55" y="45" opacity="0.36" font-size="9">Todos tus documentos</text>
+    </g>
+    <g transform="translate(0 243)" fill="#fff">
+      <text x="55" y="28" opacity="0.68" font-size="12" font-weight="700">Recomendaciones</text><text x="55" y="45" opacity="0.36" font-size="9">Acciones y seguimiento</text>
+    </g>
+  </g>
+
+  <g transform="translate(286 52)" font-family="Arial, sans-serif">
+    <text fill="#0b5394" font-size="9" font-weight="800" letter-spacing="1.6">TU ESPACIO DOCUMENTAL</text>
+    <text y="39" fill="#073b6c" font-size="22" font-weight="700">Biblioteca</text>
+    <text y="61" fill="#617487" font-size="11">Hotel Demo</text>
+    <line y1="91" x2="246" y2="91" stroke="#d9e5ef"/>
+    <text y="120" fill="#617487" font-size="9" font-weight="700" letter-spacing="1.1">INFORMES MENSUALES</text>
+    <g transform="translate(0 142)">
+      <rect width="246" height="67" rx="10" fill="#f5faff"/>
+      <rect x="11" y="12" width="37" height="43" rx="7" fill="#e2f9fa" stroke="#00b6bd"/>
+      <text x="29.5" y="38" text-anchor="middle" fill="#0b5394" font-size="8" font-weight="800">PDF</text>
+      <text x="59" y="27" fill="#102f4d" font-size="11" font-weight="700">Informe mensual · Enero</text>
+      <text x="59" y="45" fill="#617487" font-size="9">02/2027 · 12 páginas</text>
+    </g>
+    <g transform="translate(0 219)">
+      <rect width="246" height="67" rx="10" fill="#fff"/>
+      <rect x="11" y="12" width="37" height="43" rx="7" fill="#eaf3fb" stroke="#0b5394" stroke-opacity="0.24"/>
+      <text x="29.5" y="38" text-anchor="middle" fill="#0b5394" font-size="8" font-weight="800">PDF</text>
+      <text x="59" y="27" fill="#102f4d" font-size="11" font-weight="700">Manual de operaciones</text>
+      <text x="59" y="45" fill="#617487" font-size="9">Documento general</text>
+    </g>
+    <g transform="translate(0 296)">
+      <rect width="246" height="67" rx="10" fill="#fff"/>
+      <rect x="11" y="12" width="37" height="43" rx="7" fill="#eef7df" stroke="#6bac00" stroke-opacity="0.35"/>
+      <text x="29.5" y="38" text-anchor="middle" fill="#578900" font-size="8" font-weight="800">PDF</text>
+      <text x="59" y="27" fill="#102f4d" font-size="11" font-weight="700">Procedimiento de cocina</text>
+      <text x="59" y="45" fill="#617487" font-size="9">Procedimiento · 8 páginas</text>
+    </g>
+    <g transform="translate(0 646)">
+      <rect width="246" height="84" rx="11" fill="#eef7df"/>
+      <text x="18" y="29" fill="#578900" font-size="18">◈</text>
+      <text x="48" y="26" fill="#536b34" font-size="10">El asistente solo consulta</text>
+      <text x="48" y="42" fill="#536b34" font-size="10">documentos autorizados para</text>
+      <text x="48" y="58" fill="#536b34" font-size="10">tu organización.</text>
+    </g>
+  </g>
+
+  <g transform="translate(637 82)" font-family="Arial, sans-serif">
+    <g transform="translate(235 0)">
+      <rect width="62" height="62" rx="18" fill="#fff" stroke="#0b5394" stroke-opacity="0.16" transform="rotate(45 31 31)"/>
+      <text x="31" y="40" text-anchor="middle" fill="#00b6bd" font-size="25">✦</text>
+    </g>
+    <text x="266" y="106" text-anchor="middle" fill="#0b5394" font-size="10" font-weight="800" letter-spacing="1.7">ASISTENTE AI</text>
+    <text x="266" y="158" text-anchor="middle" fill="#073b6c" font-size="38" font-weight="700">Respuestas conectadas</text>
+    <text x="266" y="187" text-anchor="middle" fill="#617487" font-size="14">Consulta procesos, manuales e informes con fuentes verificables.</text>
+
+    <g transform="translate(22 234)">
+      <rect x="217" width="330" height="62" rx="16" fill="#0b5394"/>
+      <text x="237" y="27" fill="#fff" font-size="12">¿Qué acciones puedo tomar para reducir</text>
+      <text x="237" y="45" fill="#fff" font-size="12">el desperdicio del desayuno?</text>
+    </g>
+
+    <g transform="translate(0 329)" filter="url(#soft)">
+      <rect width="620" height="255" rx="19" fill="#fff" stroke="#d9e5ef"/>
+      <rect x="24" y="22" width="31" height="31" rx="9" fill="#e2f9fa"/>
+      <text x="39.5" y="44" text-anchor="middle" fill="#00b6bd" font-size="16">✦</text>
+      <text x="67" y="42" fill="#0b5394" font-size="10" font-weight="800" letter-spacing="1.3">EFFIWASTE AI</text>
+      <text x="24" y="85" fill="#102f4d" font-size="14">Según el último informe, las mayores oportunidades están en:</text>
+      <circle cx="31" cy="119" r="4" fill="#6bac00"/><text x="45" y="124" fill="#102f4d" font-size="13">Ajustar la producción del buffet a la ocupación prevista.</text>
+      <circle cx="31" cy="151" r="4" fill="#6bac00"/><text x="45" y="156" fill="#102f4d" font-size="13">Revisar gramajes y reposiciones durante la última hora.</text>
+      <circle cx="31" cy="183" r="4" fill="#6bac00"/><text x="45" y="188" fill="#102f4d" font-size="13">Comparar resultados semanalmente para validar el impacto.</text>
+      <line x1="24" y1="211" x2="596" y2="211" stroke="#d9e5ef"/>
+      <text x="24" y="237" fill="#0b5394" font-size="11" font-weight="700">▾  2 fuentes consultadas</text>
+    </g>
+  </g>
+
+  <g transform="translate(648 748)" filter="url(#soft)" font-family="Arial, sans-serif">
+    <rect width="712" height="54" rx="15" fill="#fff" stroke="#cdddea"/>
+    <text x="22" y="33" fill="#8b9bac" font-size="12">Pregunta sobre tus documentos…</text>
+    <rect x="656" y="7" width="40" height="40" rx="11" fill="#0b5394"/>
+    <text x="676" y="34" text-anchor="middle" fill="#fff" font-size="20">↑</text>
+  </g>
+</svg>
